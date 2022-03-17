@@ -22,10 +22,12 @@ namespace BEDAssignment2.Controllers
     public class ModelsController : Controller
     {
         private readonly ModelDB _context;
-        
-        public ModelsController(ModelDB context)
+        private readonly IHubContext<ExpenseHub> _expenseHubContext;
+
+        public ModelsController(ModelDB context, IHubContext<ExpenseHub> expenseHubContext)
         {
             _context = context;
+            _expenseHubContext = expenseHubContext;
         }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace BEDAssignment2.Controllers
             //dette virker helt fint dog med 
             _context.Models.Add(new Model(FirstName,LastName));
             await _context.SaveChangesAsync();
+            await _expenseHubContext.Clients.All.SendAsync("ReceiveMessage");
 
             return _context.Models.Last();
         }

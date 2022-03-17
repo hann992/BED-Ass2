@@ -8,7 +8,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/expenseHub").build
 connection.on("ReceiveMessage", function () {
     const d = new Date();
     //var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = "New expense added: " + d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "  Time: " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+    var encodedMsg = "New expense added: " + DateTime.now() ;
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     document.getElementById("messagesList").appendChild(li);
@@ -19,7 +19,7 @@ connection.start().then(function () {
         }).catch(function (err) {
             console.error(err.toString());
         });
-
+//EVENT => invokes SendMessage from expenseHub
 //document.getElementById("sendButton").addEventListener("click", function (event) {
 //    connection.invoke("SendMessage").catch(function (err) {
 //        return console.error(err.toString());
