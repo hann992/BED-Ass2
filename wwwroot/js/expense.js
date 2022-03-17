@@ -8,7 +8,7 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/expenseHub").build
 connection.on("ReceiveMessage", function () {
     const d = new Date();
     //var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = "New expense added: " + DateTime.now() ;
+    var encodedMsg = "New expense added: " + Date.now();
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     document.getElementById("messagesList").appendChild(li);
