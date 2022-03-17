@@ -26,23 +26,27 @@ namespace BEDAssignment2.Controllers
         public async Task<ActionResult<Expense>> OnPost(Expense expense)
         {
             var model = await _context.Models.FindAsync(expense.ModelId);
+
             if (model == null)
             {
                 return BadRequest();
             }
-
+            /*
             var job = await _context.Jobs.FindAsync(expense.JobId);
             if (job == null)
             {
                 return BadRequest();
             }
-
+            */
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
-            model.Expenses.Add(expense);
-            await _context.SaveChangesAsync();
-            job.Expenses.Add(expense);
-            await _context.SaveChangesAsync();
+
+
+            //await _context.SaveChangesAsync();
+            //model.Expenses.Add(expense);
+            //await _context.SaveChangesAsync();
+            //job.Expenses.Add(expense);
+            //await _context.SaveChangesAsync();
             return expense;
         }
 

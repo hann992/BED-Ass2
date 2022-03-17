@@ -100,6 +100,10 @@ namespace BEDAssignment2.Controllers
         public async Task<ActionResult<Model>> GetModel(long? id)
         {
             var model = await _context.Models.FindAsync(id);
+            List<Expense>e1 = _context.Expenses.ToList();
+            foreach(Expense expense in e1)
+                Console.WriteLine(expense);
+            //model.Expenses = e1.
             if (model == null)
             {
                 return NotFound();
