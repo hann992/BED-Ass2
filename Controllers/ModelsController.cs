@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BEDAssignment2.Data;
 using BEDAssignment2.Models;
+using System.Globalization;
 
 namespace BEDAssignment2.Controllers
 {
@@ -28,37 +29,70 @@ namespace BEDAssignment2.Controllers
         /// <summary>
         /// Add a new Model
         /// </summary>
-        /// <param name="FirstName">Model firstname</param>
-        /// /// <param name="LastName">Model lastname</param>
-        [HttpPost("{FirstName}/{LastName}")]
-        public async Task<ActionResult<Model>> OnPost(string FirstName, string LastName)
+        [HttpPost]
+        public async Task<ActionResult<ModelWithoutExpensesWithoutJobs>> OnPost(ModelWithoutIdWithoutExpensesWithoutJobs model)
+                                                        
         {
-            //dette virker helt fint dog med 
-            _context.Models.Add(new Model(FirstName,LastName));
+            // Mapping fra input model til endelig model!
+            Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
+
+            // Mapping fra input model til retur model!
+            ModelWithoutExpensesWithoutJobs returnModel = new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
+
+            // Tilføj Model til context
+            _context.Models.Add(newModel);
+
+            // Gem data
             await _context.SaveChangesAsync();
-            return _context.Models.Last();
+
+
+            // Hvordan man tager fat i data på tværs af tabeller:
+            /*     
+            var modelB = await _context.Models.LastAsync();
+
+            Console.WriteLine("Modelname: " + modelB.FirstName);
+            foreach(var job in modelB.Jobs)
+            {
+                Console.WriteLine("BITCH: " + job.Customer);
+                foreach(var modelss in job.Models)
+                {
+                    Console.WriteLine("Job Models: " + modelss.FirstName);
+                }
+            }
+            */
+
+            // Returner seneste tilføjede model
+            return returnModel;
+
+            
+
         }
 
 
-        // Expense
-        // Model Id
-        // Job Id
-
-        // Expense(int ModelId,......)
-
-
-
-
-
-        // GET metode for alle Models
+        // GET alle Models
+        /// <summary>
+        /// Fetch all Models
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Model>>> GetModels()
+        public async Task<ActionResult<IEnumerable<ModelWithoutExpensesWithoutJobs>>> GetModelsWithInfo()
         {
-            return await _context.Models.ToListAsync();
+            List<Model> models = await _context.Models.ToListAsync();
+
+            List<ModelWithoutExpensesWithoutJobs> modelsList = new List<ModelWithoutExpensesWithoutJobs>();
+
+            foreach(var model in models)
+            {
+                modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
+            }
+
+
+            return modelsList.ToList();
         }
+
+
 
         /// <summary>
-        /// Fetch a Model
+        /// Fetch a Model w. jobs & expenses
         /// </summary>
         /// <param name="id">Model Id</param>
         /// <returns></returns>
@@ -71,25 +105,14 @@ namespace BEDAssignment2.Controllers
                 return NotFound();
             }
 
-            /* 
-             
-             
-             
-             
-             
-             
-             */
-
-            //string jsonString = JsonSerializer.Serialize(weatherForecast);
-
-
-
             return model;
         }
 
 
+        // Slet en model:
+
         /// <summary>
-        /// Delete a Model
+        /// Delete a Model by Id
         /// </summary>
         /// <param name="id">Model Id</param>
         /// <returns></returns>
@@ -108,10 +131,14 @@ namespace BEDAssignment2.Controllers
             {
                 return NotFound();
             }
+
+            // Slet modellen
             _context.Models.Remove(model);
+
+            // Gem
             await _context.SaveChangesAsync();
-            //da den stadig er i ram, så vil jeg gerne se hvilken 
-            //som er slettet.
+
+            // Returner den slettede model
             return model;
         }
         /*
