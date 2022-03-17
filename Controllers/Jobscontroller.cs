@@ -82,7 +82,7 @@ namespace BEDAssignment2.Controllers
         [HttpPost("{id}")]
         public async Task<ActionResult<Job>> OnPost(long id, long modelId)
         {
-            //dette virker helt fint dog med 
+            //dette virker helt fint dog med jaja
 
 
             // Model model = _context.Models.Find(x => x.ModelId.contains(modelId));

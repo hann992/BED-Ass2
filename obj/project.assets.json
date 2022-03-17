@@ -9684,11 +9684,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mads9\\Desktop\\UNI\\BED\\ASS2\\BEDAssignment2.csproj",
+      "projectUniqueName": "C:\\Users\\mads9\\Desktop\\ UNI\\BED-Ass2\\BEDAssignment2.csproj",
       "projectName": "BEDAssignment2",
-      "projectPath": "C:\\Users\\mads9\\Desktop\\UNI\\BED\\ASS2\\BEDAssignment2.csproj",
+      "projectPath": "C:\\Users\\mads9\\Desktop\\ UNI\\BED-Ass2\\BEDAssignment2.csproj",
       "packagesPath": "C:\\Users\\mads9\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mads9\\Desktop\\UNI\\BED\\ASS2\\obj\\",
+      "outputPath": "C:\\Users\\mads9\\Desktop\\ UNI\\BED-Ass2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

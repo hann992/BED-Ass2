@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ky9w0GdCST9hi4B98GwJmMr+uD4DwcNKENefhyylomhS1oZhX1w4dppeJWgPe0uWWh1PAoAVTHapX7JeNcDG6A==",
+  "dgSpecHash": "dkXhi941LNL2r6VIOJZQlyh9yGAnq5uv9muBa2eFCUsf+NFIAA1wX9ZxbtVSEZEpG4zkQKxEywgBkgJ4AIgMzg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mads9\\Desktop\\UNI\\BED\\ASS2\\BEDAssignment2.csproj",
+  "projectFilePath": "C:\\Users\\mads9\\Desktop\\ UNI\\BED-Ass2\\BEDAssignment2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mads9\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\mads9\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
