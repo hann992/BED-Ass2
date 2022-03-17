@@ -39,7 +39,6 @@ namespace BEDAssignment2.Controllers
 
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
-
             model.Expenses.Add(expense);
             await _context.SaveChangesAsync();
             job.Expenses.Add(expense);
