@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BEDAssignment2</name>
+    </assembly>
+    <members>
+        <member name="M:BEDAssignment2.Controllers.ModelsController.OnPost(System.String,System.String)">
+            <summary>
+            Add a new Model
+            </summary>
+            <param name="FirstName">Model firstname</param>
+            /// <param name="LastName">Model lastname</param>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.ModelsController.GetModel(System.Nullable{System.Int64})">
+            <summary>
+            Fetch a Model
+            </summary>
+            <param name="id">Model Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.ModelsController.Delete(System.Nullable{System.Int64})">
+            <summary>
+            Delete a Model
+            </summary>
+            <param name="id">Model Id</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

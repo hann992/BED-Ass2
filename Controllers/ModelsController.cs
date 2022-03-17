@@ -30,7 +30,7 @@ namespace BEDAssignment2.Controllers
         /// </summary>
         /// <param name="FirstName">Model firstname</param>
         /// /// <param name="LastName">Model lastname</param>
-        [HttpPost("{FirstName}/{LastName}")]
+        [HttpPost]
         public async Task<ActionResult<Model>> OnPost(string FirstName, string LastName)
         {
             //dette virker helt fint dog med 

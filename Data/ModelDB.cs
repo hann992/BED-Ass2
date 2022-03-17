@@ -10,5 +10,7 @@ namespace BEDAssignment2.Data
             : base(options) { }
 
         public DbSet<Model> Models => Set<Model>();
+        public DbSet<Job> Jobs => Set<Job>();
+        
     }
 }

@@ -4,6 +4,21 @@ namespace BEDAssignment2.Models
 {
     public class Job
     {
+        public Job(string customer, DateTimeOffset startDate, int days, string location, string comments)
+        {
+            Customer = customer;
+            StartDate = startDate;
+            Days = days;
+            Location = location;
+            Comments = comments;
+            Models = new List<Model>();
+            Expenses = new List<Expense>();
+            
+
+
+        }
+
+
         public long JobId { get; set; }
         [MaxLength(64)]
         public string? Customer { get; set; }

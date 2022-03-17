@@ -10,6 +10,9 @@ namespace BEDAssignment2.Models
         {
             FirstName = firstName;
             LastName = lastName;
+
+            //Jobs = new List<Job>();
+            Expenses = new List<Expense>();
         }
         public long ModelId { get; set; }
         [MaxLength(64)]
@@ -40,7 +43,7 @@ namespace BEDAssignment2.Models
         //kan bruges til at ignore en property fuldstændig
         //[JsonIgnore]
         public List<Job>? Jobs { get; set; }
-        //[JsonIgnore]
+        [JsonIgnore]
         public List<Expense>? Expenses { get; set; }
     }
 }
