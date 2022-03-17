@@ -44,6 +44,8 @@ namespace BEDAssignment2.Controllers
 
             // Gem data
             await _context.SaveChangesAsync();
+            //TEST1
+
 
             //HEJ MED DIG !!!!
             // Hvordan man tager fat i data på tværs af tabeller:
