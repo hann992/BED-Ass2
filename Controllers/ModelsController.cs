@@ -14,7 +14,8 @@ using System.Globalization;
 
 namespace BEDAssignment2.Controllers
 {
-   
+    [Route("api/[controller]")]
+    [ApiController]
     [BindProperties(SupportsGet = true)]
     public class ModelsController : Controller
     {
