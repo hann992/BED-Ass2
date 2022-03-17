@@ -11,7 +11,6 @@ namespace BEDAssignment2.Data
 
         public DbSet<Model> Models => Set<Model>();
         public DbSet<Job> Jobs => Set<Job>();
-
-        
+        public DbSet<Expense> Expenses => Set<Expense>();
     }
 }
