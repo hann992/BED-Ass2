@@ -18,7 +18,6 @@ namespace BEDAssignment2.Models
 
         }
 
-
         public long JobId { get; set; }
         [MaxLength(64)]
         public string? Customer { get; set; }

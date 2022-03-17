@@ -64,19 +64,30 @@ namespace BEDAssignment2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Job>>> GetJobs()
         {
+            
+
+
+
+
+
             return await _context.Jobs.ToListAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Job>> GetJob(long? id)
+        [HttpGet("{jobId}")]
+        public async Task<ActionResult<JobWithoutModels>> GetJob(long? jobId)
         {
-            var model = await _context.Jobs.FindAsync(id);
-            if (model == null)
+            var job = await _context.Jobs.FindAsync(jobId);
+            if (job == null)
             {
                 return NotFound();
             }
 
-            return model;
+            JobWithoutModels jobWithoutModels = new JobWithoutModels(job.Customer, job.StartDate, job.Days, job.Location, job.Comments);
+            jobWithoutModels.JobId = job.JobId;
+            jobWithoutModels.Expenses = job.Expenses;
+
+
+            return jobWithoutModels;
         }
 
         [HttpPost("{id}")]
