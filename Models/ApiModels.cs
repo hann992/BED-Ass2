@@ -30,8 +30,9 @@
 
     public class ModelWithoutExpensesWithoutJobs
     {
-        public ModelWithoutExpensesWithoutJobs(string? firstName, string? lastName, string? email, string? phoneNo, string? addresLine1, string? addresLine2, string? zip, string? city, DateTime? birthDay, double? height, int? shoeSize, string? hairColor, string? comments)
+        public ModelWithoutExpensesWithoutJobs(long id, string? firstName, string? lastName, string? email, string? phoneNo, string? addresLine1, string? addresLine2, string? zip, string? city, DateTime? birthDay, double? height, int? shoeSize, string? hairColor, string? comments)
         {
+            ModelId = id;
             FirstName = firstName;
             LastName = lastName;
             Email = email;

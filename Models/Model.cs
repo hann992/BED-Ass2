@@ -7,6 +7,8 @@ namespace BEDAssignment2.Models
 {
     public class Model
     {
+
+
         public Model(string? firstName, string? lastName, string? email, string? phoneNo, string? addresLine1, string? addresLine2, string? zip, string? city, DateTime? birthDay, double? height, int? shoeSize, string? hairColor, string? comments)
         {
             FirstName = firstName;
@@ -22,6 +24,10 @@ namespace BEDAssignment2.Models
             ShoeSize = shoeSize;
             HairColor = hairColor;
             Comments = comments;
+
+            Jobs = new List<Job>();
+            Expenses = new List<Expense>();
+
         }
         public long ModelId { get; set; }
         [MaxLength(64)]
@@ -50,8 +56,8 @@ namespace BEDAssignment2.Models
         public string? Comments { get; set; }
 
         
-        public List<Job>? Jobs = new List<Job>();
-        
-        public List<Expense>? Expenses = new List<Expense>();   
+        public List<Job>? Jobs { get; set; }
+
+        public List<Expense>? Expenses { get; set; }
     }
 }

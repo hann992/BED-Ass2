@@ -36,30 +36,36 @@ namespace BEDAssignment2.Controllers
             // Mapping fra input model til endelig model!
             Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
 
-            // Mapping fra input model til retur model!
-            ModelWithoutExpensesWithoutJobs returnModel = new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
+            Job newJob = new Job("Dick", DateTimeOffset.Now, 3, "dick", "dick");
+
+            newModel.Jobs.Add(newJob);
+
+            Job newJo2b = new Job("Dic2k", DateTimeOffset.Now, 3, "d2ick", "di2ck");
+
+            newModel.Jobs.Add(newJo2b);
+
+            Console.WriteLine("Jobs: "+newModel.Jobs.Count);
+
+
+            
 
             // Tilføj Model til context
             _context.Models.Add(newModel);
 
+            
+
             // Gem data
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
+
+            Console.WriteLine("No. Jobs: " + _context.Models.LastAsync().Result.Jobs.Count());
+
+            // Mapping fra input model til retur model!
+            ModelWithoutExpensesWithoutJobs returnModel = new ModelWithoutExpensesWithoutJobs(_context.Models.Last().ModelId, model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
 
 
-            // Hvordan man tager fat i data på tværs af tabeller:
-            /*     
-            var modelB = await _context.Models.LastAsync();
 
-            Console.WriteLine("Modelname: " + modelB.FirstName);
-            foreach(var job in modelB.Jobs)
-            {
-                Console.WriteLine("BITCH: " + job.Customer);
-                foreach(var modelss in job.Models)
-                {
-                    Console.WriteLine("Job Models: " + modelss.FirstName);
-                }
-            }
-            */
+
+
 
             // Returner seneste tilføjede model
             return returnModel;
@@ -82,7 +88,7 @@ namespace BEDAssignment2.Controllers
 
             foreach(var model in models)
             {
-                modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
+                modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.ModelId, model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
             }
 
 
@@ -92,7 +98,7 @@ namespace BEDAssignment2.Controllers
 
 
         /// <summary>
-        /// Fetch a Model w. jobs & expenses
+        /// Fetch a Model with jobs and expeses
         /// </summary>
         /// <param name="id">Model Id</param>
         /// <returns></returns>
@@ -104,6 +110,16 @@ namespace BEDAssignment2.Controllers
             {
                 return NotFound();
             }
+            Console.WriteLine("No. Jobs: " + _context.Models.LastAsync().Result.Jobs.Count());
+
+            Console.WriteLine("no2 jobs: " + _context.Jobs.Count());
+
+            foreach (Job job in _context.Jobs)
+            {
+                Console.WriteLine("Jobname: " + job.Customer);
+            }
+
+            model.Jobs = _context.Jobs.ToList();
 
             return model;
         }
@@ -141,6 +157,68 @@ namespace BEDAssignment2.Controllers
             // Returner den slettede model
             return model;
         }
+
+        // Rediger en model:
+
+        /// <summary>
+        /// Edit a Models details
+        /// </summary>
+        /// <param name="FirstName">Model first Name</param>
+        /// <param name="LastName">Model last name</param>
+        /// <param name="Email">Email</param>
+        /// <param name="PhoneNo">Phone No.</param>
+        /// <param name="AddresLine1">Addresline 1</param>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Model>> Edit(long? id, [Bind("FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
+        {
+            //er id null, så skal der intet gøres.
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Find  modellen via ID'et
+            var oldModel = await _context.Models.FindAsync(id);
+            if (oldModel == null)
+            {
+                return NotFound();
+            }
+
+            if (oldModel.FirstName != null) oldModel.FirstName = model.FirstName;
+            if (oldModel.LastName != null) oldModel.LastName = model.LastName;
+            if (oldModel.Email != null) oldModel.Email = model.Email;
+            if (oldModel.PhoneNo != null) oldModel.PhoneNo = model.PhoneNo;
+            if (oldModel.AddresLine1 != null) oldModel.AddresLine1 = model.AddresLine1;
+            if (oldModel.AddresLine2 != null) oldModel.AddresLine2 = model.AddresLine2;
+            if (oldModel.Zip != null) oldModel.Zip = model.Zip;
+            if (oldModel.City != null) oldModel.City = model.City;
+            if (oldModel.BirthDay != null) oldModel.BirthDay = model.BirthDay;
+            if (oldModel.Height != null) oldModel.Height = model.Height;
+            if (oldModel.ShoeSize != null) oldModel.ShoeSize = model.ShoeSize;
+            if (oldModel.HairColor != null) oldModel.HairColor = model.HairColor;
+            if (oldModel.Comments != null) oldModel.Comments = model.Comments;
+
+
+
+            // Gem ændringer
+            await _context.SaveChangesAsync();
+
+            // Returner den redigerede
+            return model;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         /*
         [HttpPost]
         [ValidateAntiForgeryToken]

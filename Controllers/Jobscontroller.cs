@@ -25,6 +25,7 @@ namespace BEDAssignment2.Controllers
 
         }
 
+
         [HttpPost]
         public async Task<ActionResult<Job>> OnPost(string customer, DateTimeOffset startDate, int days, string location, string comments)
         {
@@ -86,20 +87,28 @@ namespace BEDAssignment2.Controllers
 
 
             // Model model = _context.Models.Find(x => x.ModelId.contains(modelId));
+
             
+
+
             var model = await _context.Models.FindAsync(modelId);
             var job = await _context.Jobs.FindAsync(id);
+
             if (job == null || model == null)
             {
                 return NotFound();
             }
-            else
-            {
-                //model.Jobs.Add(job);
-                job.Models.Add(model);
-            }
 
+            //model.Jobs.Add(job);
+            job.Models.Add(model);
+            //model.Jobs.Add(job);
+
+
+            
             await _context.SaveChangesAsync();
+
+
+
             return job;
         }
 
