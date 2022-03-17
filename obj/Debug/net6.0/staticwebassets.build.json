@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "Hash": "c8xrFH7IJElDeylW/IvMi94ZtoXD+7EOUlYvk0u7dLs=",
+  "Source": "BEDAssignment2",
+  "BasePath": "_content/BEDAssignment2",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "BEDAssignment2\\wwwroot",
+      "Source": "BEDAssignment2",
+      "ContentRoot": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\",
+      "BasePath": "_content/BEDAssignment2",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\js\\expense.js",
+      "SourceId": "BEDAssignment2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\",
+      "BasePath": "_content/BEDAssignment2",
+      "RelativePath": "js/expense.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\expense.js"
+    },
+    {
+      "Identity": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\lib\\microsoft\\signalr\\dist\\browser\\signalr.js",
+      "SourceId": "BEDAssignment2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\",
+      "BasePath": "_content/BEDAssignment2",
+      "RelativePath": "lib/microsoft/signalr/dist/browser/signalr.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\lib\\microsoft\\signalr\\dist\\browser\\signalr.js"
+    },
+    {
+      "Identity": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\lib\\microsoft\\signalr\\dist\\browser\\signalr.min.js",
+      "SourceId": "BEDAssignment2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\",
+      "BasePath": "_content/BEDAssignment2",
+      "RelativePath": "lib/microsoft/signalr/dist/browser/signalr.min.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\lib\\microsoft\\signalr\\dist\\browser\\signalr.min.js"
+    },
+    {
+      "Identity": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\newexpense.html",
+      "SourceId": "BEDAssignment2",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\rasmu\\source\\repos\\SW4\\BED-Ass2\\wwwroot\\",
+      "BasePath": "_content/BEDAssignment2",
+      "RelativePath": "newexpense.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\newexpense.html"
+    }
+  ]
+}

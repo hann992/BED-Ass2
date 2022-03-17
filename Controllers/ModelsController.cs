@@ -11,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using BEDAssignment2.Data;
 using BEDAssignment2.Models;
 
+using Microsoft.AspNetCore.SignalR;
+using BEDAssignment2.Hubs;
+
 namespace BEDAssignment2.Controllers
 {
     [Route("api/[controller]")]
@@ -19,7 +22,7 @@ namespace BEDAssignment2.Controllers
     public class ModelsController : Controller
     {
         private readonly ModelDB _context;
-
+        
         public ModelsController(ModelDB context)
         {
             _context = context;
@@ -36,10 +39,11 @@ namespace BEDAssignment2.Controllers
             //dette virker helt fint dog med 
             _context.Models.Add(new Model(FirstName,LastName));
             await _context.SaveChangesAsync();
+
             return _context.Models.Last();
         }
 
-
+        
         // Expense
         // Model Id
         // Job Id
@@ -71,14 +75,6 @@ namespace BEDAssignment2.Controllers
                 return NotFound();
             }
 
-            /* 
-             
-             
-             
-             
-             
-             
-             */
 
             //string jsonString = JsonSerializer.Serialize(weatherForecast);
 

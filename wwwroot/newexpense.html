@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<!-- Start the server with F5 or ctrl-F5. Then open this file in another browser (or tab)
+     with this url: https://localhost:7180/newexpense.html -->
+<head>
+    <meta charset="utf-8" />
+    <title>New expenses</title>
+</head>
+<body>
+    <h1>New expenses - Update</h1>
+    <h3>List of events</h3>
+
+
+    <ul id="messagesList"></ul>
+    <script src="https://unpkg.com/@microsoft/signalr@3.0.1/dist/browser/signalr.js" crossorigin="anonymous"></script>
+    <script src="js/expense.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/expenseHub").build();
+
+        // From example => In js/expense.js 
+        
+        //connection.on("ReceiveMessage", function () {
+        //    var encodedMsg = "New expense added: " + d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "  Time: " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        //    var li = document.createElement("li");
+        //    li.textContent = encodedMsg;
+        //    document.getElementById("messagesList").appendChild(li);
+        //});
+
+        //connection.start().then(function () {
+        //    console.log("Connected");
+        //}).catch(function (err) {
+        //    console.error(err.toString());
+        //});
+
+        //document.getElementById("sendButton").addEventListener("click", function (event) {
+        //    connection.invoke("SendMessage").catch(function (err) {
+        //        return console.error(err.toString());
+        //    });
+        //    event.preventDefault();
+        //});
+    </script>
+</body>
+</html>
