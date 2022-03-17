@@ -45,6 +45,7 @@ namespace BEDAssignment2.Controllers
             // Gem data
             await _context.SaveChangesAsync();
 
+
             // Hvordan man tager fat i data på tværs af tabeller:
             /*     
             var modelB = await _context.Models.LastAsync();
@@ -83,6 +84,7 @@ namespace BEDAssignment2.Controllers
             {
                 modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
             }
+
 
             return modelsList.ToList();
         }
