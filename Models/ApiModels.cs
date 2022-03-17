@@ -1,8 +1,9 @@
 ﻿namespace BEDAssignment2.Models
 {
-    public class ModelWithoutIdWithoutExpensesWithoutJobs
+    public class ModelWithoutExpensesWithoutJobs
     {
-        
+        public long? ModelId { get; set; }
+
         public string? FirstName { get; set; }
         
         public string? LastName { get; set; }
@@ -28,10 +29,12 @@
         public string? Comments { get; set; }
     }
 
+    /*
     public class ModelWithoutExpensesWithoutJobs
     {
-        public ModelWithoutExpensesWithoutJobs(string? firstName, string? lastName, string? email, string? phoneNo, string? addresLine1, string? addresLine2, string? zip, string? city, DateTime? birthDay, double? height, int? shoeSize, string? hairColor, string? comments)
+        public ModelWithoutExpensesWithoutJobs(long modelId, string? firstName, string? lastName, string? email, string? phoneNo, string? addresLine1, string? addresLine2, string? zip, string? city, DateTime? birthDay, double? height, int? shoeSize, string? hairColor, string? comments)
         {
+            ModelId = modelId;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
@@ -72,4 +75,5 @@
 
         public string? Comments { get; set; }
     }
+    */
 }

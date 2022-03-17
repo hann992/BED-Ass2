@@ -46,10 +46,11 @@ namespace BEDAssignment2.Controllers
             return expense;
         }
 
+
+        //mere til test :D
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Expense>>> GetAllExpenses()
         {
-            //mere til test :D
             return await _context.Expenses.ToListAsync();
         }
 

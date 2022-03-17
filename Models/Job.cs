@@ -14,8 +14,6 @@ namespace BEDAssignment2.Models
             Models = new List<Model>();
             Expenses = new List<Expense>();
         }
-
-
         public long JobId { get; set; }
         [MaxLength(64)]
         public string? Customer { get; set; }

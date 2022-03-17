@@ -16,7 +16,6 @@ namespace BEDAssignment2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [BindProperties(SupportsGet = true)]
     public class ModelsController : Controller
     {
         private readonly ModelDB _context;
@@ -29,9 +28,83 @@ namespace BEDAssignment2.Controllers
         /// <summary>
         /// Add a new Model
         /// </summary>
+
+
         [HttpPost]
+        public async Task<ActionResult<ModelWithoutExpensesWithoutJobs>> OnPost(ModelWithoutExpensesWithoutJobs model)
+        {
+            Model m1 = new Model();
+            m1.FirstName = model.FirstName;
+            m1.LastName = model.LastName;
+            m1.Email = model.Email;
+            m1.PhoneNo = model.PhoneNo;
+            m1.AddresLine1 = model.AddresLine1;
+            m1.AddresLine2 = model.AddresLine2;
+            m1.Zip = model.Zip;
+            m1.City=model.City;
+            m1.BirthDay = model.BirthDay;
+            m1.Height = model.Height;
+            m1.ShoeSize = model.ShoeSize;
+            m1.HairColor = model.HairColor;
+            m1.Comments = model.Comments;
+
+            _context.Models.Add(m1);
+            await _context.SaveChangesAsync();
+
+            return model;
+
+            /*
+            // Mapping fra input model til endelig model!
+            Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
+
+            // Mapping fra input model til retur model!
+            ModelWithoutExpensesWithoutJobs returnModel = new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
+
+            // Tilføj Model til context
+            _context.Models.Add(newModel);
+
+            // Gem data
+            await _context.SaveChangesAsync();
+
+
+            // Hvordan man tager fat i data på tværs af tabeller:
+            /*     
+            var modelB = await _context.Models.LastAsync();
+
+            Console.WriteLine("Modelname: " + modelB.FirstName);
+            foreach(var job in modelB.Jobs)
+            {
+                Console.WriteLine("BITCH: " + job.Customer);
+                foreach(var modelss in job.Models)
+                {
+                    Console.WriteLine("Job Models: " + modelss.FirstName);
+                }
+            }
+            
+
+            // Returner seneste tilføjede model
+            return returnModel;
+
+           */
+
+        }
+
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ModelWithoutExpensesWithoutJobs>>> GetModels()
+        {
+
+            List<ModelWithoutExpensesWithoutJobs> modeList = new List<ModelWithoutExpensesWithoutJobs>();
+
+
+            foreach (var model in modeList)
+            {
+                modeList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
+            }
+        }
+
+        /*[HttpPost]
         public async Task<ActionResult<ModelWithoutExpensesWithoutJobs>> OnPost(ModelWithoutIdWithoutExpensesWithoutJobs model)
-                                                        
         {
             // Mapping fra input model til endelig model!
             Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
@@ -59,20 +132,22 @@ namespace BEDAssignment2.Controllers
                     Console.WriteLine("Job Models: " + modelss.FirstName);
                 }
             }
-            */
+            
 
             // Returner seneste tilføjede model
             return returnModel;
 
-            
+           
 
-        }
-
+        } 
+        */
 
         // GET alle Models
         /// <summary>
         /// Fetch all Models
         /// </summary>
+        ///
+        /*
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ModelWithoutExpensesWithoutJobs>>> GetModelsWithInfo()
         {
@@ -87,7 +162,7 @@ namespace BEDAssignment2.Controllers
 
             return modelsList.ToList();
         }
-
+        */
 
 
         /// <summary>
