@@ -4,6 +4,6 @@
     {
 
 
-        // Andreas er AWESOME!
+        // Andreas er SHIT!
     }
 }
