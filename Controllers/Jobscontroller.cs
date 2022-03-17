@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BEDAssignment2.Data;
 using BEDAssignment2.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 
 namespace BEDAssignment2.Controllers
 {
@@ -24,22 +25,17 @@ namespace BEDAssignment2.Controllers
             _context = context;
 
         }
-
-        [HttpPost]
+        
+        [HttpPost] // opret nyt job
         public async Task<ActionResult<Job>> OnPost(string customer, DateTimeOffset startDate, int days, string location, string comments)
         {
-            //dette virker helt fint dog med 
-
-
-           // Model model = _context.Models.Find(x => x.ModelId.contains(modelId));
-
             _context.Jobs.Add(new Job(customer, startDate, days, location, comments));
 
             await _context.SaveChangesAsync();
             return _context.Jobs.Last();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{jobId}")] //slet job
         public async Task<ActionResult<Job>> Delete(long? id)
         {
             //er id null, så skal der intet gøres.
@@ -56,12 +52,34 @@ namespace BEDAssignment2.Controllers
             }
             _context.Jobs.Remove(job);
             await _context.SaveChangesAsync();
-            //da den stadig er i ram, så vil jeg gerne se hvilken 
-            //som er slettet.
-            return job;
+         
+            return NoContent();
         }
 
-        [HttpGet]
+        [HttpDelete("{jobId}/{modelId}")] //slet model fra job
+        public async Task<ActionResult<Model>> Delete(long? jobId, long? modelId)
+        {
+            //er id null, så skal der intet gøres.
+            if (jobId == null || modelId == null)
+            {
+                return NotFound();
+            }
+
+            //Find  modellen via ID'et
+            var job = await _context.Jobs.FindAsync(jobId);
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            Model model = job.Models.Find(x => x.ModelId == modelId);
+            job.Models.Remove(model);
+            await _context.SaveChangesAsync();
+           
+            return NoContent();
+        }
+
+        [HttpGet] //Hente en liste med alle jobs.Skal inkludere navn på modeller, som er sat på de enkelte jobs, men ikke expenses
         public async Task<ActionResult<IEnumerable<Job>>> GetJobs()
         {
             
@@ -73,8 +91,30 @@ namespace BEDAssignment2.Controllers
             return await _context.Jobs.ToListAsync();
         }
 
-        [HttpGet("{jobId}")]
-        public async Task<ActionResult<JobWithoutModels>> GetJob(long? jobId)
+        [HttpGet("fuck/{modelId}")] //Hente en liste med alle jobs for en angiven model – uden expenses.
+        public async Task<ActionResult<IEnumerable<JobWithoutModelsWithoutExpenses>>> GetJobs(long modelId)
+        {
+            List<JobWithoutModelsWithoutExpenses> jobWWithoutModelsWithoutExpenseslist = new List<JobWithoutModelsWithoutExpenses>();
+            var model = await _context.Models.FindAsync(modelId);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var job in model.Jobs)
+            {
+                JobWithoutModelsWithoutExpenses jobWithoutModelsWithoutExpenses = new JobWithoutModelsWithoutExpenses(job.Customer, job.StartDate, job.Days, job.Location, job.Comments);
+                jobWWithoutModelsWithoutExpenseslist.Add(jobWithoutModelsWithoutExpenses);
+
+            }
+
+
+
+            return jobWWithoutModelsWithoutExpenseslist.ToList();
+        }
+
+        [HttpGet("{jobId}")] //Hente job med den angivne JobId. Skal inkludere listen med alle expenses for jobbet. 
+        public async Task<ActionResult<JobWithoutModels>> GetJobs(long? jobId)
         {
             var job = await _context.Jobs.FindAsync(jobId);
             if (job == null)
@@ -90,14 +130,10 @@ namespace BEDAssignment2.Controllers
             return jobWithoutModels;
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("{jobId}/{modelId}")] //Tilføj model til job.
         public async Task<ActionResult<Job>> OnPost(long id, long modelId)
         {
-            //dette virker helt fint dog med jaja
 
-
-            // Model model = _context.Models.Find(x => x.ModelId.contains(modelId));
-            
             var model = await _context.Models.FindAsync(modelId);
             var job = await _context.Jobs.FindAsync(id);
             if (job == null || model == null)
@@ -106,15 +142,41 @@ namespace BEDAssignment2.Controllers
             }
             else
             {
-                //model.Jobs.Add(job);
+                model.Jobs.Add(job);
                 job.Models.Add(model);
+                _context.Jobs.Add(job);
+                _context.Models.Add(model);
             }
 
             await _context.SaveChangesAsync();
             return job;
         }
 
+        [HttpPut] //Opdatere et job
+        public async Task<ActionResult<Job>> OnPut(long? id, DateTimeOffset? startDate, int? days, string? location,
+            string comments)
+        {
+            var job = await _context.Jobs.FindAsync(id);
 
+            if (startDate != null)
+            {
+                job.StartDate = startDate.Value;
+            }
+            if (days != null)
+            {
+                job.Days = days.Value;
+            }
+            if (location != null)
+            {
+                job.Location = location;
+            }
+            if (comments != null)
+            {
+                job.Comments = comments;
+            }
 
+            await _context.SaveChangesAsync();
+            return job;
+        }
     }
 }
