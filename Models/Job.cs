@@ -13,9 +13,6 @@ namespace BEDAssignment2.Models
             Comments = comments;
             Models = new List<Model>();
             Expenses = new List<Expense>();
-            
-
-
         }
 
 

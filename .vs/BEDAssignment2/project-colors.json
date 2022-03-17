@@ -1,11 +1,16 @@
 {
   "Version": 1,
   "ProjectMap": {
+    "f0c3dbda-d995-49a2-86fe-c140c45578c2": {
+      "ProjectGuid": "f0c3dbda-d995-49a2-86fe-c140c45578c2",
+      "DisplayName": "BEDAssignment2",
+      "ColorIndex": 0
+    },
     "8ac6ddc5-6091-4292-a8c9-3a13eb866f6a": {
       "ProjectGuid": "8ac6ddc5-6091-4292-a8c9-3a13eb866f6a",
       "DisplayName": "BEDAssignment2",
-      "ColorIndex": 0
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }
