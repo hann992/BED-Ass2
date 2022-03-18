@@ -78,7 +78,7 @@ namespace BEDAssignment2.Controllers
         }
 
         /// <summary>
-        /// Fetch a Model w. jobs & expenses
+        /// Fetch a Model w. jobs and expenses
         /// </summary>
         /// <param name="id">Model Id</param>
         /// <returns></returns>
@@ -134,6 +134,9 @@ namespace BEDAssignment2.Controllers
 
 
         // Opdatere en model:
+        /// <summary>
+        /// Edit Model details
+        /// </summary>
         [HttpPut("{id}")]
         public async Task<ActionResult<Model>> Edit(long id, string firstName, string lastName, string email, string phoneNo, string addresLine1, string addresLine2, string zip, string city, DateTime birthDay, double height, int shoeSize, string hairColor, string comments)
         {

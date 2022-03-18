@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<!-- Start the server with F5 or ctrl-F5. Then open this file in another browser (or tab)
+     with this url: https://localhost:7180/newexpense.html -->
+<head>
+    <meta charset="utf-8" />
+    <title>New expenses</title>
+</head>
+<body>
+    <h1>New expenses - Update</h1>
+    <h3>List of events</h3>
+
+
+    <ul id="messagesList"></ul>
+    <script src="https://unpkg.com/@microsoft/signalr@3.0.1/dist/browser/signalr.js" crossorigin="anonymous"></script>
+    <script src="js/expense.js"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/expenseHub").build();
+
+
+
+
+
+
+    </script>
+</body>
+</html>

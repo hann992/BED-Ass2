@@ -2,6 +2,7 @@ using BEDAssignment2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using BEDAssignment2.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ModelDB>(opt => opt.UseInMemoryDatabase("ModelList"));
+
+//SignalR 
+builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -38,7 +42,11 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 app.UseAuthorization();
+app.UseStaticFiles();
 
 app.MapControllers();
+
+// Map SignalR Hub
+app.MapHub<ExpenseHub>("/expenseHub");
 
 app.Run();

@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BEDAssignment2.Data;
 using BEDAssignment2.Models;
+using BEDAssignment2.Hubs;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
+using Microsoft.AspNetCore.SignalR;
+using BEDAssignment2.Hubs;
 
 namespace BEDAssignment2.Controllers
 {
@@ -17,11 +20,17 @@ namespace BEDAssignment2.Controllers
     public class ExpensesController : Controller
     {
         private readonly ModelDB _context;
-        public ExpensesController(ModelDB context)
+        private readonly IHubContext<ExpenseHub> _expenseHubContext;
+
+        public ExpensesController(ModelDB context, IHubContext<ExpenseHub> expenseHubContext)
         {
             _context = context;
+            _expenseHubContext = expenseHubContext;
         }
 
+        /// <summary>
+        /// Add an Expense
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Expense>> OnPost(ExpenseNoId expense)
         {
@@ -53,6 +62,8 @@ namespace BEDAssignment2.Controllers
             // Vi gemmer den nye expense i modellen også!
             model.Expenses.Add(_context.Expenses.Last());
             await _context.SaveChangesAsync();
+
+            await _expenseHubContext.Clients.All.SendAsync("ReceiveMessage");
 
             // Udelukkende til responsen:
             Expense newExpense = new Expense(expense);
