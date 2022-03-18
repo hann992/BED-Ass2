@@ -31,7 +31,6 @@ namespace BEDAssignment2.Controllers
         /// </summary>
         [HttpPost]
         public async Task<ActionResult<ModelWithoutExpensesWithoutJobs>> OnPost(ModelWithoutIdWithoutExpensesWithoutJobs model)
-                                                        
         {
             // Mapping fra input model til endelig model!
             Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
@@ -64,8 +63,6 @@ namespace BEDAssignment2.Controllers
             // Returner seneste tilføjede model
             return returnModel;
 
-            
-
         }
 
 
@@ -85,11 +82,8 @@ namespace BEDAssignment2.Controllers
                 modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
             }
 
-
             return modelsList.ToList();
         }
-
-
 
         /// <summary>
         /// Fetch a Model w. jobs & expenses
@@ -100,9 +94,9 @@ namespace BEDAssignment2.Controllers
         public async Task<ActionResult<Model>> GetModel(long? id)
         {
             var model = await _context.Models.FindAsync(id);
-            List<Expense>e1 = _context.Expenses.ToList();
-            foreach(Expense expense in e1)
-                Console.WriteLine(expense);
+            /*List<Expense>e1 = */_context.Expenses.ToList();
+            /*foreach(Expense expense in e1)
+                Console.WriteLine(expense);*/
             //model.Expenses = e1.
             if (model == null)
             {
@@ -138,13 +132,41 @@ namespace BEDAssignment2.Controllers
 
             // Slet modellen
             _context.Models.Remove(model);
-
             // Gem
             await _context.SaveChangesAsync();
 
             // Returner den slettede model
             return model;
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Model>> Update(long? id)
+        {
+            //er id null, så skal der intet gøres.
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Find  modellen via ID'et
+            var model = await _context.Models.FindAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            // Slet modellen
+            _context.Models.Remove(model);
+            // Gem
+            await _context.SaveChangesAsync();
+
+            // Returner den slettede model
+            return model;
+        }
+
+
+
         /*
         [HttpPost]
         [ValidateAntiForgeryToken]
