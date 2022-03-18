@@ -117,6 +117,11 @@ namespace BEDAssignment2.Controllers
             foreach (Job job in _context.Jobs)
             {
                 Console.WriteLine("Jobname: " + job.Customer);
+                foreach (Model model2 in job.Models)
+                {
+                    Console.WriteLine(model2.FirstName);
+                }
+                
             }
 
             model.Jobs = _context.Jobs.ToList();
