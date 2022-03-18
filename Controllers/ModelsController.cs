@@ -141,7 +141,148 @@ namespace BEDAssignment2.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Model>> Update(long? id)
+        //public async Task<ActionResult<Model>> Edit(ModelWithoutExpensesWithoutJobs model)
+        public async Task<ActionResult<Model>> Edit(long id, string firstName, string lastName, string email, string phoneNo, string addresLine1, string addresLine2, string zip, string city, DateTime birthDay, double height, int shoeSize, string hairColor, string comments)
+        {
+            //Find  modellen via ID'et
+            var oldModel = await _context.Models.FindAsync(id);
+            if (oldModel == null)
+            {
+                return NotFound();
+            }
+
+            if (firstName != null)
+            {
+                oldModel.FirstName = firstName;
+            }
+
+            if (lastName != null)
+            {
+                oldModel.LastName = lastName;
+            }
+            if (email != null)
+            {
+                oldModel.Email = email;
+            }
+            if (phoneNo != null)
+            {
+                oldModel.PhoneNo = phoneNo;
+            }
+            if (addresLine1 != null)
+            {
+                oldModel.AddresLine1 = addresLine1;
+            }
+            if (addresLine2 != null)
+            {
+                oldModel.AddresLine2 = addresLine2;
+            }
+            if (zip != null)
+            {
+                oldModel.Zip = zip;
+            }
+            if (city != null)
+            {
+                oldModel.City = city;
+            }
+            if (birthDay != null)
+            {
+                oldModel.BirthDay = birthDay;
+            }
+            if (height != null)
+            {
+                oldModel.Height = height;
+            }
+            if (shoeSize != null)
+            {
+                oldModel.ShoeSize = shoeSize;
+            }
+            if (hairColor != null)
+            {
+                oldModel.HairColor = hairColor;
+            }
+            if (comments != null)
+            {
+                oldModel.Comments = comments;
+            }
+
+
+            //Model model1 = new Model(firstName,  lastName,  email,  phoneNo,  addresLine1,  addresLine2,  zip,  city,  birthDay,  height,  shoeSize,  hairColor, comments);
+            //model1.ModelId = id;
+            //model1.Expenses = oldModel.Expenses;
+            //model1.Jobs = oldModel.Jobs;
+
+            /*
+            var oldModel = await _context.Models.FindAsync(model.ModelId);
+
+            if (oldModel == null)
+            {
+                return NotFound();
+            }
+
+            if (model.FirstName != null)
+            {
+                oldModel.FirstName = model.FirstName;
+            }
+            if (model.LastName != null)
+            {
+                oldModel.LastName = model.LastName;
+            }
+            if (model.Email != null)
+            {
+                oldModel.Email = model.Email;
+            }
+            if (model.PhoneNo != null)
+            {
+                oldModel.PhoneNo = model.PhoneNo;
+            }
+            if (model.AddresLine1 != null)
+            {
+                oldModel.AddresLine1 = model.AddresLine1;
+            }
+            if (model.AddresLine2 != null)
+            {
+                oldModel.AddresLine2 = model.AddresLine2;
+            }
+            if (model.City != null)
+            {
+                oldModel.City = model.City;
+            }
+            if (model.Zip != null)
+            {
+                oldModel.Zip = model.Zip;
+            }
+            if (model.BirthDay != null)
+            {
+                oldModel.BirthDay = model.BirthDay;
+            }
+            if (model.Height != null)
+            {
+                oldModel.Height = model.Height;
+            }
+            if (model.ShoeSize != null)
+            {
+                oldModel.ShoeSize = model.ShoeSize;
+            }
+            if (model.HairColor != null)
+            {
+                oldModel.HairColor = model.HairColor;
+            }
+            if (model.Comments != null)
+            {
+                oldModel.Comments = model.Comments;
+            }
+            */
+            // Gem ændringer
+            await _context.SaveChangesAsync();
+
+            // Returner den redigerede
+            return oldModel;
+        }
+
+
+        /*
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Model>> Edit(long? id, [Bind("FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
         {
             //er id null, så skal der intet gøres.
             if (id == null)
@@ -150,21 +291,34 @@ namespace BEDAssignment2.Controllers
             }
 
             //Find  modellen via ID'et
-            var model = await _context.Models.FindAsync(id);
-            if (model == null)
+            var oldModel = await _context.Models.FindAsync(id);
+            if (oldModel == null)
             {
                 return NotFound();
             }
 
-            // Slet modellen
-            _context.Models.Remove(model);
-            // Gem
+            if (oldModel.FirstName != null){oldModel.FirstName = model.FirstName;}
+            if (oldModel.LastName != null) oldModel.LastName = model.LastName;
+            if (oldModel.Email != null) oldModel.Email = model.Email;
+            if (oldModel.PhoneNo != null) oldModel.PhoneNo = model.PhoneNo;
+            if (oldModel.AddresLine1 != null) oldModel.AddresLine1 = model.AddresLine1;
+            if (oldModel.AddresLine2 != null) oldModel.AddresLine2 = model.AddresLine2;
+            if (oldModel.Zip != null) oldModel.Zip = model.Zip;
+            if (oldModel.City != null) oldModel.City = model.City;
+            if (oldModel.BirthDay != null) oldModel.BirthDay = model.BirthDay;
+            if (oldModel.Height != null) oldModel.Height = model.Height;
+            if (oldModel.ShoeSize != null) oldModel.ShoeSize = model.ShoeSize;
+            if (oldModel.HairColor != null) oldModel.HairColor = model.HairColor;
+            if (oldModel.Comments != null) oldModel.Comments = model.Comments;
+
+
+            // Gem ændringer
             await _context.SaveChangesAsync();
 
-            // Returner den slettede model
+            // Returner den redigerede
             return model;
         }
-
+        */
 
 
         /*
