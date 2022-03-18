@@ -4,6 +4,65 @@
         <name>BEDAssignment2</name>
     </assembly>
     <members>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.OnPost(System.String,System.DateTimeOffset,System.Int32,System.String,System.String)">
+            <summary>
+            Post new model
+            </summary>
+            <param name="customer">Customer</param>
+            <param name="startDate">StartDate</param>
+            <param name="days">Days</param>
+            <param name="location">Location</param>
+            <param name="comments">Comments</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.Delete(System.Nullable{System.Int64})">
+            <summary>
+            Delete a Job by Id
+            </summary>
+            <param name="id">Job Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.Delete(System.Nullable{System.Int64},System.Nullable{System.Int64})">
+            <summary>
+            Delete a model from Job by Id
+            </summary>
+            <param name="jobId">Job Id</param>
+            <param name="modelId">Model Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.GetJobs(System.Int64)">
+            <summary>
+            Get all jobs from a model
+            </summary>
+            <param name="modelId">Model Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.GetJobs(System.Nullable{System.Int64})">
+            <summary>
+            Get job with expenses from ID
+            </summary>
+            <param name="jobId">Job Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.OnPost(System.Int64,System.Int64)">
+            <summary>
+            Add model by id to job by id
+            </summary>
+            <param name="jobId">Job Id</param>
+            <param name="modelId">Model Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:BEDAssignment2.Controllers.Jobscontroller.OnPut(System.Nullable{System.Int64},System.Nullable{System.DateTimeOffset},System.Nullable{System.Int32},System.String,System.String)">
+            <summary>
+            update job
+            </summary>
+            <param name="id">Job Id</param>
+            <param name="startDate">StartDate</param>
+            <param name="days">Days</param>
+            <param name="location">Location</param>
+            <param name="comments">Comments</param>
+            <returns></returns>
+        </member>
         <member name="M:BEDAssignment2.Controllers.ModelsController.OnPost(BEDAssignment2.Models.ModelWithoutIdWithoutExpensesWithoutJobs)">
             <summary>
             Add a new Model
