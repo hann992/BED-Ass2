@@ -31,7 +31,6 @@ namespace BEDAssignment2.Controllers
         /// </summary>
         [HttpPost]
         public async Task<ActionResult<ModelWithoutExpensesWithoutJobs>> OnPost(ModelWithoutIdWithoutExpensesWithoutJobs model)
-                                                        
         {
             // Mapping fra input model til endelig model!
             Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
@@ -44,7 +43,6 @@ namespace BEDAssignment2.Controllers
 
             // Gem data
             await _context.SaveChangesAsync();
-
 
             // Hvordan man tager fat i data på tværs af tabeller:
             /*     
@@ -64,8 +62,6 @@ namespace BEDAssignment2.Controllers
             // Returner seneste tilføjede model
             return returnModel;
 
-            
-
         }
 
 
@@ -78,18 +74,17 @@ namespace BEDAssignment2.Controllers
         {
             List<Model> models = await _context.Models.ToListAsync();
 
+            //laver en liste af models uden udgifter og jobs
             List<ModelWithoutExpensesWithoutJobs> modelsList = new List<ModelWithoutExpensesWithoutJobs>();
 
+            // for hver model i modelsDB overføres til vores modelslist af modeller uden udgifter og jobs. 
             foreach(var model in models)
             {
                 modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
             }
 
-
             return modelsList.ToList();
         }
-
-
 
         /// <summary>
         /// Fetch a Model w. jobs & expenses
@@ -99,7 +94,14 @@ namespace BEDAssignment2.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Model>> GetModel(long? id)
         {
+            //tjek om modellen findes
             var model = await _context.Models.FindAsync(id);
+
+            //caster vores expenses til en liste
+            /*List<Expense>e1 = */_context.Expenses.ToList();
+            /*foreach(Expense expense in e1)
+                Console.WriteLine(expense);*/
+            //model.Expenses = e1.
             if (model == null)
             {
                 return NotFound();
@@ -108,9 +110,7 @@ namespace BEDAssignment2.Controllers
             return model;
         }
 
-
         // Slet en model:
-
         /// <summary>
         /// Delete a Model by Id
         /// </summary>
@@ -134,13 +134,129 @@ namespace BEDAssignment2.Controllers
 
             // Slet modellen
             _context.Models.Remove(model);
-
-            // Gem
+            // Gem modellen
             await _context.SaveChangesAsync();
 
             // Returner den slettede model
             return model;
         }
+
+
+        // Opdatere en model:
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Model>> Edit(long id, string firstName, string lastName, string email, string phoneNo, string addresLine1, string addresLine2, string zip, string city, DateTime birthDay, double height, int shoeSize, string hairColor, string comments)
+        {
+            //Find  modellen via ID
+            var oldModel = await _context.Models.FindAsync(id);
+            if (oldModel == null)
+            {
+                return NotFound();
+            }
+            //tjek om de forskellige værdier at andet en null
+            // for derefter at sætte dem til oldmodel's værdier.
+            if (firstName != null)
+            {
+                oldModel.FirstName = firstName;
+            }
+
+            if (lastName != null)
+            {
+                oldModel.LastName = lastName;
+            }
+            if (email != null)
+            {
+                oldModel.Email = email;
+            }
+            if (phoneNo != null)
+            {
+                oldModel.PhoneNo = phoneNo;
+            }
+            if (addresLine1 != null)
+            {
+                oldModel.AddresLine1 = addresLine1;
+            }
+            if (addresLine2 != null)
+            {
+                oldModel.AddresLine2 = addresLine2;
+            }
+            if (zip != null)
+            {
+                oldModel.Zip = zip;
+            }
+            if (city != null)
+            {
+                oldModel.City = city;
+            }
+            if (birthDay != null)
+            {
+                oldModel.BirthDay = birthDay;
+            }
+            if (height != null)
+            {
+                oldModel.Height = height;
+            }
+            if (shoeSize != null)
+            {
+                oldModel.ShoeSize = shoeSize;
+            }
+            if (hairColor != null)
+            {
+                oldModel.HairColor = hairColor;
+            }
+            if (comments != null)
+            {
+                oldModel.Comments = comments;
+            }
+
+            // Gem ændringerne
+            await _context.SaveChangesAsync();
+
+            // Returner den redigerede
+            return oldModel;
+        }
+
+
+        /*
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Model>> Edit(long? id, [Bind("FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
+        {
+            //er id null, så skal der intet gøres.
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Find  modellen via ID'et
+            var oldModel = await _context.Models.FindAsync(id);
+            if (oldModel == null)
+            {
+                return NotFound();
+            }
+
+            if (oldModel.FirstName != null){oldModel.FirstName = model.FirstName;}
+            if (oldModel.LastName != null) oldModel.LastName = model.LastName;
+            if (oldModel.Email != null) oldModel.Email = model.Email;
+            if (oldModel.PhoneNo != null) oldModel.PhoneNo = model.PhoneNo;
+            if (oldModel.AddresLine1 != null) oldModel.AddresLine1 = model.AddresLine1;
+            if (oldModel.AddresLine2 != null) oldModel.AddresLine2 = model.AddresLine2;
+            if (oldModel.Zip != null) oldModel.Zip = model.Zip;
+            if (oldModel.City != null) oldModel.City = model.City;
+            if (oldModel.BirthDay != null) oldModel.BirthDay = model.BirthDay;
+            if (oldModel.Height != null) oldModel.Height = model.Height;
+            if (oldModel.ShoeSize != null) oldModel.ShoeSize = model.ShoeSize;
+            if (oldModel.HairColor != null) oldModel.HairColor = model.HairColor;
+            if (oldModel.Comments != null) oldModel.Comments = model.Comments;
+
+
+            // Gem ændringer
+            await _context.SaveChangesAsync();
+
+            // Returner den redigerede
+            return model;
+        }
+        */
+
+
         /*
         [HttpPost]
         [ValidateAntiForgeryToken]

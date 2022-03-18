@@ -49,9 +49,11 @@ namespace BEDAssignment2.Models
         [MaxLength(1000)]
         public string? Comments { get; set; }
 
-        
-        public List<Job>? Jobs = new List<Job>();
-        
-        public List<Expense>? Expenses = new List<Expense>();   
+        public List<Job>? Jobs { get; set; }
+        public List<Expense>? Expenses { get; set; }
+
+        //public List<Job>? Jobs = new List<Job>();
+
+        //public List<Expense>? Expenses = new List<Expense>();   
     }
 }
