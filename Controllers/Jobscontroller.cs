@@ -250,7 +250,7 @@ namespace BEDAssignment2.Controllers
         // #8
 
         /// <summary>
-        /// Get job with expenses from ID
+        /// Get job from ID, with expenses
         /// </summary>
         /// <param name="jobId">Job Id</param>
         /// <returns></returns>
@@ -267,13 +267,11 @@ namespace BEDAssignment2.Controllers
             }
             
             JobWithoutModels jobWithoutModels = new JobWithoutModels(job.Customer, job.StartDate, job.Days, job.Location, job.Comments); //opretter et nyt job med korrekte variabler.
+            
             jobWithoutModels.JobId = job.JobId;       //tilføjer de værdier der ikke er i konstructoren.
             jobWithoutModels.Expenses = job.Expenses;
 
-            foreach(Expense expense in job.Expenses)
-            {
-                jobWithoutModels.Expenses.Add(expense);
-            }
+
 
             return jobWithoutModels;
         }

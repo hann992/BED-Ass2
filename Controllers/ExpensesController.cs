@@ -23,32 +23,42 @@ namespace BEDAssignment2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Expense>> OnPost(Expense expense)
+        public async Task<ActionResult<Expense>> OnPost(ExpenseNoId expense)
         {
+            // Kan vi finde modellen?
             var model = await _context.Models.FindAsync(expense.ModelId);
 
+            // El er den null?
             if (model == null)
             {
+                // så send BAD REQUEST:
                 return BadRequest();
             }
 
-            /*
+            // Vi fandt modellen, findes jobbet?
+
             var job = await _context.Jobs.FindAsync(expense.JobId);
+
+            // El er den null?
             if (job == null)
             {
+                // så send BAD REQUEST:
                 return BadRequest();
             }
-            */
-            _context.Expenses.Add(expense);
+
+            // Vi gemmer den nye expense
+            _context.Expenses.Add(new Expense(expense));
             await _context.SaveChangesAsync();
 
+            // Vi gemmer den nye expense i modellen også!
+            model.Expenses.Add(_context.Expenses.Last());
+            await _context.SaveChangesAsync();
 
-            //await _context.SaveChangesAsync();
-            //model.Expenses.Add(expense);
-            //await _context.SaveChangesAsync();
-            //job.Expenses.Add(expense);
-            //await _context.SaveChangesAsync();
-            return expense;
+            // Udelukkende til responsen:
+            Expense newExpense = new Expense(expense);
+            newExpense.ExpenseId = _context.Expenses.Last().ExpenseId;
+
+            return newExpense;
         }
 
 
