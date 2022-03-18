@@ -101,7 +101,7 @@ namespace BEDAssignment2.Controllers
         /// <returns></returns>
         [HttpPut] //Opdatere et job
         public async Task<ActionResult<Job>> OnPut(long? id, DateTimeOffset? startDate, int? days, string? location,
-            string comments)
+            string? comments)
         {
             var job = await _context.Jobs.FindAsync(id); // finder job.
             if (job == null)
