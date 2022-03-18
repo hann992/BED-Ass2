@@ -17,27 +17,9 @@
     <script>
         var connection = new signalR.HubConnectionBuilder().withUrl("/expenseHub").build();
 
-        // From example => Now In js/expense.js 
-        
-        //connection.on("ReceiveMessage", function () {
-        //    var encodedMsg = "New expense added: " + d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear() + "  Time: " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        //    var li = document.createElement("li");
-        //    li.textContent = encodedMsg;
-        //    document.getElementById("messagesList").appendChild(li);
-        //});
 
-        //connection.start().then(function () {
-        //    console.log("Connected");
-        //}).catch(function (err) {
-        //    console.error(err.toString());
-        //});
 
-        //document.getElementById("sendButton").addEventListener("click", function (event) {
-        //    connection.invoke("SendMessage").catch(function (err) {
-        //        return console.error(err.toString());
-        //    });
-        //    event.preventDefault();
-        //});
+
 
 
     </script>
