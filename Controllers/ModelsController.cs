@@ -35,29 +35,20 @@ namespace BEDAssignment2.Controllers
             // Mapping fra input model til endelig model!
             Model newModel = new Model(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
 
-            // Mapping fra input model til retur model!
-            ModelWithoutExpensesWithoutJobs returnModel = new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
-
             // Tilføj Model til context
             _context.Models.Add(newModel);
 
             // Gem data
             await _context.SaveChangesAsync();
 
-            // Hvordan man tager fat i data på tværs af tabeller:
-            /*     
-            var modelB = await _context.Models.LastAsync();
+            // Mapping fra input model til retur model!
+            ModelWithoutExpensesWithoutJobs returnModel = new ModelWithoutExpensesWithoutJobs(_context.Models.Last().ModelId, model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments);
 
-            Console.WriteLine("Modelname: " + modelB.FirstName);
-            foreach(var job in modelB.Jobs)
-            {
-                Console.WriteLine("BITCH: " + job.Customer);
-                foreach(var modelss in job.Models)
-                {
-                    Console.WriteLine("Job Models: " + modelss.FirstName);
-                }
-            }
-            */
+
+
+            
+
+
 
             // Returner seneste tilføjede model
             return returnModel;
@@ -80,7 +71,7 @@ namespace BEDAssignment2.Controllers
             // for hver model i modelsDB overføres til vores modelslist af modeller uden udgifter og jobs. 
             foreach(var model in models)
             {
-                modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
+                modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.ModelId, model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
             }
 
             return modelsList.ToList();
@@ -215,243 +206,5 @@ namespace BEDAssignment2.Controllers
             return oldModel;
         }
 
-
-        /*
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Model>> Edit(long? id, [Bind("FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
-        {
-            //er id null, så skal der intet gøres.
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            //Find  modellen via ID'et
-            var oldModel = await _context.Models.FindAsync(id);
-            if (oldModel == null)
-            {
-                return NotFound();
-            }
-
-            if (oldModel.FirstName != null){oldModel.FirstName = model.FirstName;}
-            if (oldModel.LastName != null) oldModel.LastName = model.LastName;
-            if (oldModel.Email != null) oldModel.Email = model.Email;
-            if (oldModel.PhoneNo != null) oldModel.PhoneNo = model.PhoneNo;
-            if (oldModel.AddresLine1 != null) oldModel.AddresLine1 = model.AddresLine1;
-            if (oldModel.AddresLine2 != null) oldModel.AddresLine2 = model.AddresLine2;
-            if (oldModel.Zip != null) oldModel.Zip = model.Zip;
-            if (oldModel.City != null) oldModel.City = model.City;
-            if (oldModel.BirthDay != null) oldModel.BirthDay = model.BirthDay;
-            if (oldModel.Height != null) oldModel.Height = model.Height;
-            if (oldModel.ShoeSize != null) oldModel.ShoeSize = model.ShoeSize;
-            if (oldModel.HairColor != null) oldModel.HairColor = model.HairColor;
-            if (oldModel.Comments != null) oldModel.Comments = model.Comments;
-
-
-            // Gem ændringer
-            await _context.SaveChangesAsync();
-
-            // Returner den redigerede
-            return model;
-        }
-        */
-
-
-        /*
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ModelId,FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
-        {
-            if (id != model.ModelId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(model);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ModelExists(model.ModelId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
-        }
-        */
-        /*
-
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Model>> PutTodo(long id, Model model)
-        {
-            if (id != model.ModelId)
-            {
-                return BadRequest();
-            }
-
-
-
-            _context.Entry(Model).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TodoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        */
-
-        /*
-        // GET: Models/Details/5
-
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var model = await _context.Models
-                .FirstOrDefaultAsync(m => m.ModelId == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-        // GET: Models/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Models/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ModelId,FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
-        }
-
-        // GET: Models/Edit/5
-        public async Task<IActionResult> Edit(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var model = await _context.Models.FindAsync(id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-            return View(model);
-        }
-
-        // POST: Models/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("ModelId,FirstName,LastName,Email,PhoneNo,AddresLine1,AddresLine2,Zip,City,BirthDay,Height,ShoeSize,HairColor,Comments")] Model model)
-        {
-            if (id != model.ModelId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(model);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ModelExists(model.ModelId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(model);
-        }
-
-        // GET: Models/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var model = await _context.Models
-                .FirstOrDefaultAsync(m => m.ModelId == id);
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            return View(model);
-        }
-
-        // POST: Models/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var model = await _context.Models.FindAsync(id);
-            _context.Models.Remove(model);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ModelExists(long id)
-        {
-            return _context.Models.Any(e => e.ModelId == id);
-        }
-        */
     }
 }

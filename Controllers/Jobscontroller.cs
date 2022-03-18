@@ -25,20 +25,47 @@ namespace BEDAssignment2.Controllers
 
         }
 
+
+        // #1
+
+        /// <summary>
+        /// Create new Job
+        /// </summary>
+        /// <param name="customer">Customer</param>
+        /// <param name="startDate">StartDate</param>
+        /// <param name="days">Days</param>
+        /// <param name="location">Location</param>
+        /// <param name="comments">Comments</param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Job>> OnPost(string customer, DateTimeOffset startDate, int days, string location, string comments)
+        public async Task<ActionResult<JobSimple>> OnPost(string customer, DateTimeOffset startDate, int days, string location, string comments)
         {
-            //dette virker helt fint dog med 
+            // Laver et nyt job, det som skal gemmes
+            Job newJob = new Job(customer, startDate, days, location, comments);
 
+            // Vi tilføjer det nye job til contexten.
+            _context.Jobs.Add(newJob);
 
-           // Model model = _context.Models.Find(x => x.ModelId.contains(modelId));
-
-            _context.Jobs.Add(new Job(customer, startDate, days, location, comments));
-
+            // Vi gemmer det nye job
             await _context.SaveChangesAsync();
-            return _context.Jobs.Last();
+
+            // Vi finder det gemte ID, så retur Job reflektere det ægte ID
+            newJob.JobId = _context.Models.Last().ModelId;
+
+            // Laver et DTO uden lister som skal returneres:
+            JobSimple returnJob = new JobSimple(newJob);
+
+            return returnJob;
         }
 
+
+        // #2
+
+        /// <summary>
+        /// Delete a Job by Id
+        /// </summary>
+        /// <param name="id">Job Id</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Job>> Delete(long? id)
         {
@@ -56,52 +83,202 @@ namespace BEDAssignment2.Controllers
             }
             _context.Jobs.Remove(job);
             await _context.SaveChangesAsync();
-            //da den stadig er i ram, så vil jeg gerne se hvilken 
-            //som er slettet.
+
+
             return job;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Job>>> GetJobs()
-        {
-            return await _context.Jobs.ToListAsync();
-        }
+        // #3
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Job>> GetJob(long? id)
+        /// <summary>
+        /// update job
+        /// </summary>
+        /// <param name="id">Job Id</param>
+        /// <param name="startDate">StartDate</param>
+        /// <param name="days">Days</param>
+        /// <param name="location">Location</param>
+        /// <param name="comments">Comments</param>
+        /// <returns></returns>
+        [HttpPut] //Opdatere et job
+        public async Task<ActionResult<Job>> OnPut(long? id, DateTimeOffset? startDate, int? days, string? location,
+            string comments)
         {
-            var model = await _context.Jobs.FindAsync(id);
-            if (model == null)
+            var job = await _context.Jobs.FindAsync(id); // finder job.
+            if (job == null)
             {
                 return NotFound();
             }
-
-            return model;
-        }
-
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Job>> OnPost(long id, long modelId)
-        {
-            //dette virker helt fint dog med jaja
-
-
-            // Model model = _context.Models.Find(x => x.ModelId.contains(modelId));
-            
-            var model = await _context.Models.FindAsync(modelId);
-            var job = await _context.Jobs.FindAsync(id);
-            if (job == null || model == null)
+            //Tjekker om variablerne er blevet indsat til at blive udskiftet, hvis de er bliver de udskiftet.
+            if (startDate != null)
             {
-                return NotFound();
+                job.StartDate = startDate.Value;
             }
-            else
+            if (days != null)
             {
-                //model.Jobs.Add(job);
-                job.Models.Add(model);
+                job.Days = days.Value;
+            }
+            if (location != null)
+            {
+                job.Location = location;
+            }
+            if (comments != null)
+            {
+                job.Comments = comments;
             }
 
             await _context.SaveChangesAsync();
             return job;
         }
+
+        // #4
+
+        /// <summary>
+        /// Add model by id to job by id
+        /// </summary>
+        /// <param name="jobId">Job Id</param>
+        /// <param name="modelId">Model Id</param>
+        /// <returns></returns>
+        [HttpPut("{jobId}/{modelId}")]
+        public async Task<IActionResult> PutJobModel(long jobId, long modelId)
+        {
+            var job = await _context.Jobs.Where(x => x.JobId == jobId).Include(m => m.Models).FirstOrDefaultAsync();
+            var model = await _context.Models.Where(x => x.ModelId == modelId).Include(j => j.Jobs).FirstOrDefaultAsync();
+
+            job.Models.Add(model);
+            model.Jobs.Add(job);
+
+            _context.Entry(job).State = EntityState.Modified;
+            _context.Entry(model).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
+        // #5
+
+        /// <summary>
+        /// Delete a model from Job by Id
+        /// </summary>
+        /// <param name="jobId">Job Id</param>
+        /// <param name="modelId">Model Id</param>
+        /// <returns></returns>
+        [HttpDelete("{jobId}/{modelId}")] //slet model fra job
+        public async Task<ActionResult<Model>> Delete(long? jobId, long? modelId)
+        {
+            //er id null, så skal der intet gøres.
+            if (jobId == null || modelId == null)
+            {
+                return NotFound();
+            }
+
+            //Find  jobbet via ID'et
+            var job = await _context.Jobs.FindAsync(jobId);
+            if (job == null)//hvis jobbet ikke findes returneres notfound.
+            {
+                return NotFound();
+            }
+
+            Model model = job.Models.Find(x => x.ModelId == modelId); // finder den korrekte model i jobbet.
+            job.Models.Remove(model); //fjerner modellen fra jobbet.
+            model.Jobs.Remove(job); //fjerner jobbet fra modellen.
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // #6
+
+        /// <summary>
+        /// Get all Jobs, with models, without expenses
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<JobWithModels>>> GetJobs()
+        {
+            List<Job> jobs = await _context.Jobs.Include(x => x.Models).ToListAsync();
+
+            List<JobWithModels> jobsWithModels = new List<JobWithModels>();
+
+            foreach (Job job in jobs)
+            {
+                List<ModelWithoutExpensesWithoutJobs> modelsList = new List<ModelWithoutExpensesWithoutJobs>();
+                foreach (var model in job.Models)
+                {
+                    modelsList.Add(new ModelWithoutExpensesWithoutJobs(model.ModelId, model.FirstName, model.LastName, model.Email, model.PhoneNo, model.AddresLine1, model.AddresLine2, model.Zip, model.City, model.BirthDay, model.Height, model.ShoeSize, model.HairColor, model.Comments));
+                }
+                JobWithModels newJobWithModels = new JobWithModels(job);
+                newJobWithModels.Models = modelsList;
+
+                jobsWithModels.Add(newJobWithModels);
+            }
+
+            return jobsWithModels.ToList();
+        }
+
+        // #7
+
+        /// <summary>
+        /// Get all jobs from a model
+        /// </summary>
+        /// <param name="modelId">Model Id</param>
+        /// <returns></returns>
+        [HttpGet("Model/{modelId}")] //Hente en liste med alle jobs for en angiven model – uden expenses.
+        public async Task<ActionResult<IEnumerable<JobWithoutModelsWithoutExpenses>>> GetJobs(long modelId)
+        {
+            List<JobWithoutModelsWithoutExpenses> jobWWithoutModelsWithoutExpenseslist = new List<JobWithoutModelsWithoutExpenses>(); //opretter en ny liste til returnering.
+            var model = await _context.Models.FindAsync(modelId);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var job in model.Jobs) //opretter nye objekter med korrekt returtype og ligger dem i listen til returnering.
+            {
+                JobWithoutModelsWithoutExpenses jobWithoutModelsWithoutExpenses = new JobWithoutModelsWithoutExpenses(job.Customer, job.StartDate, job.Days, job.Location, job.Comments);
+                jobWWithoutModelsWithoutExpenseslist.Add(jobWithoutModelsWithoutExpenses);
+
+            }
+
+
+
+            return jobWWithoutModelsWithoutExpenseslist.ToList();
+        }
+
+
+        
+        // #8
+
+        /// <summary>
+        /// Get job with expenses from ID
+        /// </summary>
+        /// <param name="jobId">Job Id</param>
+        /// <returns></returns>
+        [HttpGet("{jobId}")] //Hente job med den angivne JobId. Skal inkludere listen med alle expenses for jobbet. 
+        public async Task<ActionResult<JobWithoutModels>> GetJobs(long? jobId)
+        {
+            var job = await _context.Jobs.Where(x => x.JobId == jobId).Include(x => x.Expenses).FirstAsync();
+
+            Console.WriteLine("Expenses: " + job.Expenses.Count);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+            
+            JobWithoutModels jobWithoutModels = new JobWithoutModels(job.Customer, job.StartDate, job.Days, job.Location, job.Comments); //opretter et nyt job med korrekte variabler.
+            jobWithoutModels.JobId = job.JobId;       //tilføjer de værdier der ikke er i konstructoren.
+            jobWithoutModels.Expenses = job.Expenses;
+
+            foreach(Expense expense in job.Expenses)
+            {
+                jobWithoutModels.Expenses.Add(expense);
+            }
+
+            return jobWithoutModels;
+        }
+
+
 
 
 
