@@ -50,7 +50,7 @@ namespace BEDAssignment2.Controllers
             await _context.SaveChangesAsync();
 
             // Vi finder det gemte ID, så retur Job reflektere det ægte ID
-            newJob.JobId = _context.Models.Last().ModelId;
+            newJob.JobId = _context.Jobs.Last().JobId;
 
             // Laver et DTO uden lister som skal returneres:
             JobSimple returnJob = new JobSimple(newJob);
@@ -159,7 +159,7 @@ namespace BEDAssignment2.Controllers
         // #5
 
         /// <summary>
-        /// Delete a model from Job by Id
+        /// Delete a model by id from Job by Id
         /// </summary>
         /// <param name="jobId">Job Id</param>
         /// <param name="modelId">Model Id</param>
@@ -174,15 +174,24 @@ namespace BEDAssignment2.Controllers
             }
 
             //Find  jobbet via ID'et
-            var job = await _context.Jobs.FindAsync(jobId);
+            var job = await _context.Jobs.Include(x => x.Models).Where(x => x.JobId == jobId).FirstAsync();
             if (job == null)//hvis jobbet ikke findes returneres notfound.
             {
                 return NotFound();
             }
-
+            if (job.Models == null)//hvis jobbet ikke findes returneres notfound.
+            {
+                return NotFound();
+            }
             Model model = job.Models.Find(x => x.ModelId == modelId); // finder den korrekte model i jobbet.
+
             job.Models.Remove(model); //fjerner modellen fra jobbet.
+            
             model.Jobs.Remove(job); //fjerner jobbet fra modellen.
+
+            _context.Entry(job).State = EntityState.Modified;
+            _context.Entry(model).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -226,23 +235,35 @@ namespace BEDAssignment2.Controllers
         [HttpGet("Model/{modelId}")] //Hente en liste med alle jobs for en angiven model – uden expenses.
         public async Task<ActionResult<IEnumerable<JobWithoutModelsWithoutExpenses>>> GetJobs(long modelId)
         {
-            List<JobWithoutModelsWithoutExpenses> jobWWithoutModelsWithoutExpenseslist = new List<JobWithoutModelsWithoutExpenses>(); //opretter en ny liste til returnering.
-            var model = await _context.Models.FindAsync(modelId);
+            //opretter en ny liste til returnering.
+            List<JobWithoutModelsWithoutExpenses> newJobList = new List<JobWithoutModelsWithoutExpenses>(); 
+
+
+            var model = await _context.Models.Where(x => x.ModelId == modelId).Include(x => x.Jobs).FirstAsync();
+
+            
             if (model == null)
+            {
+                return NotFound();
+            }
+
+            if (model.Jobs == null)
             {
                 return NotFound();
             }
 
             foreach (var job in model.Jobs) //opretter nye objekter med korrekt returtype og ligger dem i listen til returnering.
             {
-                JobWithoutModelsWithoutExpenses jobWithoutModelsWithoutExpenses = new JobWithoutModelsWithoutExpenses(job.Customer, job.StartDate, job.Days, job.Location, job.Comments);
-                jobWWithoutModelsWithoutExpenseslist.Add(jobWithoutModelsWithoutExpenses);
+                Console.WriteLine("Job for " + model.FirstName + ": " + job.Customer);
+                JobWithoutModelsWithoutExpenses newJob = new JobWithoutModelsWithoutExpenses(job.Customer, job.StartDate, job.Days, job.Location, job.Comments);
+                newJob.JobId = job.JobId;
+                newJobList.Add(newJob);
 
             }
 
 
 
-            return jobWWithoutModelsWithoutExpenseslist.ToList();
+            return newJobList.ToList();
         }
 
 
