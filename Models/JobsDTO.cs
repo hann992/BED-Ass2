@@ -10,8 +10,8 @@ namespace BEDAssignment2.Models
             Customer = job.Customer;
             StartDate = job.StartDate;
             Days = job.Days;
+            Location = job.Location;
             Comments = job.Comments;
-
             Models = new List<ModelWithoutExpensesWithoutJobs>();
         }
 
@@ -36,6 +36,7 @@ namespace BEDAssignment2.Models
             Customer = job.Customer;
             StartDate = job.StartDate;
             Days = job.Days;
+            Location = job.Location;
             Comments = job.Comments;
         }
 
